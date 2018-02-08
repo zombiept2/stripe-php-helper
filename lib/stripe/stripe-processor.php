@@ -298,6 +298,18 @@ class StripeProcessor
                     {
                         $subscription_id = $this->data->subscription_id;
                     }
+					$plan = '';
+					if (property_exists($this->data, 'plan'))
+                    {
+						if ($this->data->plan != '' && $this->data->plan != 'null')
+						{
+							$plan = $this->data->plan;
+						}
+						else if ($this->data->plan == 'null')
+						{
+							$plan = null;
+						}
+                    }
 					$coupon = '';
                     if (property_exists($this->data, 'coupon'))
                     {
@@ -310,20 +322,8 @@ class StripeProcessor
 							$coupon = null;
 						}
                     }
-					$prorate = '';
-                    if (property_exists($this->data, 'prorate'))
-                    {
-						if ($this->data->prorate != '' && $this->data->prorate != 'null')
-						{
-							$prorate = $this->data->prorate;
-						}
-						else if ($this->data->prorate == 'null')
-						{
-							$prorate = null;
-						}
-                    }
 					$meta_data = '';
-                    $subscription = $this->sh->UpdateSubscription($subscription_id, $coupon, $prorate, $meta_data);
+                    $subscription = $this->sh->UpdateSubscription($subscription_id, $plan, $coupon, $meta_data);
                     $this->status = 200;
                     $this->message = 'Subscription updated';
                     $this->output = $subscription;
@@ -334,7 +334,20 @@ class StripeProcessor
                     {
                         $subscription_id = $this->data->subscription_id;
                     }
-                    $subscription = $this->sh->CancelSubscription($subscription_id);
+					$immediate = false;
+                    if (property_exists($this->data, 'immediate'))
+                    {
+                        $immediate = $this->data->immediate;
+						if ($immediate == 'true') 
+						{
+							$immediate = true;
+						}
+						else
+						{
+							$immediate = false;
+						}
+                    }
+                    $subscription = $this->sh->CancelSubscription($subscription_id, $immediate);
                     $this->status = 200;
                     $this->message = 'Subscription deleted';
                     $this->output = $subscription;

@@ -994,9 +994,9 @@ print_r($customers);</pre>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="create_customer_coupon" class="col-sm-2 control-label">Coupon</label>
+                                                <label for="create_subscription_coupon" class="col-sm-2 control-label">Coupon</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="create_customer_coupon" placeholder="Coupon">
+                                                    <input type="text" class="form-control" id="create_subscription_coupon" placeholder="Coupon">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -1117,18 +1117,15 @@ print_r($subscription);</pre>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="update_customer_coupon" class="col-sm-2 control-label">Coupon</label>
+                                                <label for="update_subscription_plan" class="col-sm-2 control-label">Plan ID</label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="update_customer_coupon" placeholder="Coupon">
+                                                    <input type="text" class="form-control" id="update_subscription_plan" placeholder="Plan ID">
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="update_subscription_prorate" class="col-sm-2 control-label">Prorate</label>
+                                                <label for="update_subscription_coupon" class="col-sm-2 control-label">Coupon</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-control" id="update_subscription_prorate">
-                                                        <option value="">No</option>
-                                                        <option value="1">Yes</option>
-                                                    </select>
+                                                    <input type="text" class="form-control" id="update_subscription_coupon" placeholder="Coupon">
                                                 </div>
                                             </div>
                                         </div>
@@ -1147,10 +1144,10 @@ print_r($subscription);</pre>
 <pre>
 $sh = new StripeHelper();
 // $subscription_id - subscription ID
+// $plan = plan ID
 // $coupon - coupon name to give ongoing discount to customer on recurring charges
-// $prorate - flag denoting whether to prorate switching plans during a billing cycle
 // $meta_data - set of key/value pairs that you can attach to a customer object
-$subscription = $sh->UpdateSubscription($subscription_id, $coupon, $prorate, $meta_data);
+$subscription = $sh->UpdateSubscription($subscription_id, $plan, $coupon, $prorate, $meta_data);
 print_r($subscription);</pre>
                                     </div>
                                 </div>
@@ -1188,6 +1185,12 @@ print_r($subscription);</pre>
                                                     <input type="text" class="form-control" id="cancel_subscription_id" placeholder="Subscription ID">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="cancel_subscription_immediate" class="col-sm-2 control-label">Immediate</label>
+                                                <div class="col-sm-10">
+                                                    <input type="checkbox" id="cancel_subscription_immediate" />
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button id="process_button_cancel_subscription" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
@@ -1204,7 +1207,8 @@ print_r($subscription);</pre>
 <pre>
 $sh = new StripeHelper();
 // $subscription_id - subscription ID
-$subscription = $sh->CancelSubscription($subscription_id);
+// $immediate - cancel immediately instead of waiting until the end of the billing cycle
+$subscription = $sh->CancelSubscription($subscription_id, $immediate);
 print_r($subscription);</pre>
                                     </div>
                                 </div>
@@ -2154,13 +2158,18 @@ print_r($refunds);</pre>
                         // validations
                         if (valid) {
                             ActivateButton(method);
+                            var immediate = false;
+                            if ($('#'+method+'_immediate').is(":checked")) {
+                                immediate = true;
+                            }
                             $.ajax({
                                 type: 'POST',
                                 url: 'processor.php',
                                 dataType: 'json',
                                 data: {
                                     method: method,
-                                    subscription_id: $('#'+method+'_id').val()
+                                    subscription_id: $('#'+method+'_id').val(),
+                                    immediate: immediate
                                 }
                             }).done(function(data) {
                                 if (data) {
@@ -2168,6 +2177,7 @@ print_r($refunds);</pre>
                                         $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
                                         $('#'+method+'_content .output').show();
                                         $('#'+method+'_id').val('');
+                                        $('#'+method+'_immediate').prop('checked', false);
                                         ResetButton(method);
                                     }
                                     else {
@@ -2199,8 +2209,8 @@ print_r($refunds);</pre>
                                 data: {
                                     method: method,
                                     subscription_id: $('#'+method+'_id').val(),
-                                    coupon: $('#'+method+'_coupon').val(),
-                                    prorate: $('#'+method+'_prorate').val()
+                                    plan: $('#'+method+'_plan').val(),
+                                    coupon: $('#'+method+'_coupon').val()
                                 }
                             }).done(function(data) {
                                 if (data) {
@@ -2208,8 +2218,8 @@ print_r($refunds);</pre>
                                         $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
                                         $('#'+method+'_content .output').show();
                                         $('#'+method+'_id').val('');
+                                        $('#'+method+'_plan').val('');
                                         $('#'+method+'_coupon').val('');
-                                        $('#'+method+'_prorate').val('');
                                         ResetButton(method);
                                     }
                                     else {

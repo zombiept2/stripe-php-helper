@@ -6,10 +6,13 @@ class StripeHelper
     var $stripe_status;
     var $stripe_api_key;
     var $stripe_public_api_key;
+	var $stripe_webhook_signing_secret;
     var $stripe_test_secret_api_key;
     var $stripe_test_publishable_api_key;
     var $stripe_live_secret_api_key;
     var $stripe_live_publishable_api_key;
+	var $stripe_test_webhook_signing_secret;
+    var $stripe_live_webhook_signing_secret;
 	public function __construct() 
 	{
         if (defined('STRIPE_STATUS'))
@@ -32,18 +35,70 @@ class StripeHelper
 		{
 			$this->stripe_live_publishable_api_key = STRIPE_LIVE_PUBLISHABLE_API_KEY;
 		}
+		if (defined('STRIPE_TEST_WEBHOOK_SIGNING_SECRET'))
+		{
+			$this->stripe_test_webhook_signing_secret = STRIPE_TEST_WEBHOOK_SIGNING_SECRET;
+		}
+		if (defined('STRIPE_LIVE_WEBHOOK_SIGNING_SECRET'))
+		{
+			$this->stripe_live_webhook_signing_secret = STRIPE_LIVE_WEBHOOK_SIGNING_SECRET;
+		}
         if ($this->stripe_status == 'live')
         {
             $this->stripe_api_key = $this->stripe_live_secret_api_key;
             $this->stripe_public_api_key = $this->stripe_live_publishable_api_key;
+			$this->stripe_webhook_signing_secret = $this->stripe_live_webhook_signing_secret;
         }
         else
         {
             $this->stripe_api_key = $this->stripe_test_secret_api_key;
             $this->stripe_public_api_key = $this->stripe_test_publishable_api_key;
+			$this->stripe_webhook_signing_secret = $this->stripe_test_webhook_signing_secret;
         }
         Stripe\Stripe::setApiKey($this->stripe_api_key);
     }
+	//webhooks
+	function ProcessWebhook()
+	{
+		$output = false;
+		$status = 200;
+		$event = '';
+		$message = '';
+		$error = '';
+		$payload = @file_get_contents("php://input");
+		$sig_header = '';
+		if (isset($_SERVER["HTTP_STRIPE_SIGNATURE"])) 
+		{
+			$sig_header = $_SERVER["HTTP_STRIPE_SIGNATURE"];
+		}
+		$response = null;
+		try 
+		{
+			$response = \Stripe\Webhook::constructEvent($payload, $sig_header, $this->stripe_webhook_signing_secret);
+			$event = $response->type;
+			$message = 'Event received';
+		} 
+		catch (\UnexpectedValueException $e) 
+		{
+			// Invalid payload
+			$status = 400;
+			$error = 'Invalid payload';
+		} 
+		catch (\Stripe\Error\SignatureVerification $e) 
+		{
+			// Invalid signature
+			$status = 400;
+			$error = 'Invalid signature';
+		}
+		$output = array(
+			'event' => $event,
+			'status' => $status,
+			'message' => $message,
+			'error' => $error,
+			'response' => $response
+		);
+		return $output;
+	}
 	//charges
     public function Charge($amount, $token, $description)
     {
@@ -879,13 +934,21 @@ class StripeHelper
 		}
 		return $response;
 	}
-	public function UpdateSubscription($subscription_id, $coupon, $prorate, $meta_data)
+	public function UpdateSubscription($subscription_id, $plan, $coupon, $meta_data)
 	{
 		$response = false;
 		$error = '';
 		try
 		{
 			$subscription = Stripe\Subscription::retrieve($subscription_id);
+			if ($plan != '' && $plan != 'null')
+			{
+				$subscription->plan = $plan;
+			}
+			else if ($plan == 'null')
+			{
+				$subscription->plan = null;
+			}
 			if ($coupon != '' && $coupon != 'null')
 			{
 				$subscription->coupon = $coupon;
@@ -893,14 +956,6 @@ class StripeHelper
 			else if ($coupon == 'null')
 			{
 				$subscription->coupon = null;
-			}
-			if ($prorate != '' && $prorate != 'null')
-			{
-				$subscription->prorate = $prorate;
-			}
-			else if ($prorate == 'null')
-			{
-				$subscription->prorate = null;
 			}
 			if ($meta_data != '' && $meta_data != 'null')
 			{
@@ -948,14 +1003,21 @@ class StripeHelper
 		}
 		return $response;
 	}
-	public function CancelSubscription($subscription_id)
+	public function CancelSubscription($subscription_id, $immediate)
 	{
 		$response = false;
 		$error = '';
 		try
 		{
 			$subscription = Stripe\Subscription::retrieve($subscription_id);
-			$response = $subscription->cancel();
+			if ($immediate)
+			{
+				$response = $subscription->cancel();
+			}
+			else
+			{
+				$response = $subscription->cancel(['at_period_end' => true]);
+			}
 		}
 		catch(Stripe_CardError $e) 
 		{
