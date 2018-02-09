@@ -824,6 +824,317 @@ class StripeHelper
 		}
 		return $response;
 	}
+	//cards
+	public function ListCards($customer_id)
+	{
+		$response = false;
+		$error = '';
+		try
+		{
+			$customer = Stripe\Customer::retrieve($customer_id);
+			$response = $customer->sources->all(array(
+				"object" => "card"
+			));
+		}
+		catch(Stripe_CardError $e) 
+		{
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_InvalidRequestError $e) 
+		{
+			// Invalid parameters were supplied to Stripe's API
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_AuthenticationError $e) 
+		{
+			// Authentication with Stripe's API failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_ApiConnectionError $e) 
+		{
+			// Network communication with Stripe failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_Error $e) 
+		{
+			// Display a very generic error to the user, and maybe send
+			// yourself an email
+			$error = $e->getMessage();
+		} 
+		catch (Exception $e) 
+		{
+			// Something else happened, completely unrelated to Stripe
+			$error = $e->getMessage();
+		}
+		if ($error != '')
+		{
+			$response['error'] = $error;
+		}
+		return $response;
+	}
+	public function AddCard($customer_id, $token)
+	{
+		$response = false;
+		$error = '';
+		try
+		{
+			$customer = Stripe\Customer::retrieve($customer_id);
+			$response = $customer->sources->create(array(
+				"source" => $token, // obtained with Stripe.js
+			));
+		}
+		catch(Stripe_CardError $e) 
+		{
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_InvalidRequestError $e) 
+		{
+			// Invalid parameters were supplied to Stripe's API
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_AuthenticationError $e) 
+		{
+			// Authentication with Stripe's API failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_ApiConnectionError $e) 
+		{
+			// Network communication with Stripe failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_Error $e) 
+		{
+			// Display a very generic error to the user, and maybe send
+			// yourself an email
+			$error = $e->getMessage();
+		} 
+		catch (Exception $e) 
+		{
+			// Something else happened, completely unrelated to Stripe
+			$error = $e->getMessage();
+		}
+		if ($error != '')
+		{
+			$response['error'] = $error;
+		}
+		return $response;
+	}
+	public function GetCard($customer_id, $card_id)
+	{
+		$response = false;
+		$error = '';
+		try
+		{
+			$customer = Stripe\Customer::retrieve($customer_id);
+			$response = $customer->sources->retrieve($card_id);
+		}
+		catch(Stripe_CardError $e) 
+		{
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_InvalidRequestError $e) 
+		{
+			// Invalid parameters were supplied to Stripe's API
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_AuthenticationError $e) 
+		{
+			// Authentication with Stripe's API failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_ApiConnectionError $e) 
+		{
+			// Network communication with Stripe failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_Error $e) 
+		{
+			// Display a very generic error to the user, and maybe send
+			// yourself an email
+			$error = $e->getMessage();
+		} 
+		catch (Exception $e) 
+		{
+			// Something else happened, completely unrelated to Stripe
+			$error = $e->getMessage();
+		}
+		if ($error != '')
+		{
+			$response['error'] = $error;
+		}
+		return $response;
+	}
+	public function UpdateCard($customer_id, $card_id, $address_city, $address_country, $address_line1, $address_line2, $address_state, $address_zip, $exp_month, $exp_year, $name, $meta_data)
+	{
+		$response = false;
+		$error = '';
+		try
+		{
+			$customer = Stripe\Customer::retrieve($customer_id);
+			$card = $customer->sources->retrieve($card_id);
+			if ($address_city != '' && $address_city != 'null')
+			{
+				$card->address_city = $address_city;
+			}
+			else if ($address_city == 'null')
+			{
+				$card->address_city = null;
+			}
+			if ($address_country != '' && $address_country != 'null')
+			{
+				$card->address_country = $address_country;
+			}
+			else if ($address_country == 'null')
+			{
+				$card->address_country = null;
+			}
+			if ($address_line1 != '' && $address_line1 != 'null')
+			{
+				$card->address_line1 = $address_line1;
+			}
+			else if ($address_line1 == 'null')
+			{
+				$card->address_line1 = null;
+			}
+			if ($address_line2 != '' && $address_line2 != 'null')
+			{
+				$card->address_line2 = $address_line2;
+			}
+			else if ($address_line2 == 'null')
+			{
+				$card->address_line2 = null;
+			}
+			if ($address_state != '' && $address_state != 'null')
+			{
+				$card->address_state = $address_state;
+			}
+			else if ($address_state == 'null')
+			{
+				$card->address_state = null;
+			}
+			if ($address_zip != '' && $address_zip != 'null')
+			{
+				$card->address_zip = $address_zip;
+			}
+			else if ($address_zip == 'null')
+			{
+				$card->address_zip = null;
+			}
+			if ($exp_month != '' && $exp_month != 'null')
+			{
+				$card->exp_month = $exp_month;
+			}
+			else if ($exp_month == 'null')
+			{
+				$card->exp_month = null;
+			}
+			if ($exp_year != '' && $exp_year != 'null')
+			{
+				$card->exp_year = $exp_year;
+			}
+			else if ($exp_year == 'null')
+			{
+				$card->exp_year = null;
+			}
+			if ($name != '' && $name != 'null')
+			{
+				$card->name = $name;
+			}
+			else if ($name == 'null')
+			{
+				$card->name = null;
+			}
+			if ($meta_data != '' && $meta_data != 'null')
+			{
+				$card->meta_data = $meta_data;
+			}
+			else if ($meta_data == 'null')
+			{
+				$card->meta_data = null;
+			}
+			$response = $card->save();
+		}
+		catch(Stripe_CardError $e) 
+		{
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_InvalidRequestError $e) 
+		{
+			// Invalid parameters were supplied to Stripe's API
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_AuthenticationError $e) 
+		{
+			// Authentication with Stripe's API failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_ApiConnectionError $e) 
+		{
+			// Network communication with Stripe failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_Error $e) 
+		{
+			// Display a very generic error to the user, and maybe send
+			// yourself an email
+			$error = $e->getMessage();
+		} 
+		catch (Exception $e) 
+		{
+			// Something else happened, completely unrelated to Stripe
+			$error = $e->getMessage();
+		}
+		if ($error != '')
+		{
+			$response['error'] = $error;
+		}
+		return $response;
+	}
+	public function RemoveCard($customer_id, $card_id)
+	{
+		$response = false;
+		$error = '';
+		try
+		{
+			$customer = Stripe\Customer::retrieve($customer_id);
+			$response = $customer->sources->retrieve($card_id)->delete();
+		}
+		catch(Stripe_CardError $e) 
+		{
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_InvalidRequestError $e) 
+		{
+			// Invalid parameters were supplied to Stripe's API
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_AuthenticationError $e) 
+		{
+			// Authentication with Stripe's API failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_ApiConnectionError $e) 
+		{
+			// Network communication with Stripe failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_Error $e) 
+		{
+			// Display a very generic error to the user, and maybe send
+			// yourself an email
+			$error = $e->getMessage();
+		} 
+		catch (Exception $e) 
+		{
+			// Something else happened, completely unrelated to Stripe
+			$error = $e->getMessage();
+		}
+		if ($error != '')
+		{
+			$response['error'] = $error;
+		}
+		return $response;
+	}
 	//subscriptions
 	public function CreateSubscription($customer_id, $coupon, $plan_id, $meta_data)
 	{

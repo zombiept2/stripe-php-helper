@@ -258,6 +258,132 @@ class StripeProcessor
                     $this->message = 'Customers found';
                     $this->output = $customers;
                     break;
+				//cards
+				case 'list_cards':
+                    $customer_id = '';
+                    if (property_exists($this->data, 'customer_id'))
+                    {
+                        $customer_id = $this->data->customer_id;
+                    }
+                    $cards = $this->sh->ListCards($customer_id);
+                    $this->status = 200;
+                    $this->message = 'Cards found';
+                    $this->output = $cards;
+                    break;
+				case 'add_card':
+                    $customer_id = '';
+                    if (property_exists($this->data, 'customer_id'))
+                    {
+                        $customer_id = $this->data->customer_id;
+                    }
+					$token = '';
+                    if (property_exists($this->data, 'token'))
+                    {
+                        $token = $this->data->token;
+                    }
+                    $card = $this->sh->AddCard($customer_id, $token);
+                    $this->status = 200;
+                    $this->message = 'Card added';
+                    $this->output = $card;
+                    break;
+				case 'get_card':
+                    $customer_id = '';
+                    if (property_exists($this->data, 'customer_id'))
+                    {
+                        $customer_id = $this->data->customer_id;
+                    }
+					$card_id = '';
+                    if (property_exists($this->data, 'card_id'))
+                    {
+                        $card_id = $this->data->card_id;
+                    }
+                    $card = $this->sh->GetCard($customer_id, $card_id);
+                    $this->status = 200;
+                    $this->message = 'Card found';
+                    $this->output = $card;
+                    break;
+				case 'update_card':
+                    $customer_id = '';
+                    if (property_exists($this->data, 'customer_id'))
+                    {
+                        $customer_id = $this->data->customer_id;
+                    }
+					$card_id = '';
+                    if (property_exists($this->data, 'card_id'))
+                    {
+                        $card_id = $this->data->card_id;
+                    }
+					$address_city = '';
+                    if (property_exists($this->data, 'address_city'))
+                    {
+                        $address_city = $this->data->address_city;
+                    }
+					$address_country = '';
+                    if (property_exists($this->data, 'address_country'))
+                    {
+                        $address_country = $this->data->address_country;
+                    }
+					$address_line1 = '';
+                    if (property_exists($this->data, 'address_line1'))
+                    {
+                        $address_line1 = $this->data->address_line1;
+                    }
+					$address_line2 = '';
+                    if (property_exists($this->data, 'address_line2'))
+                    {
+                        $address_line2 = $this->data->address_line2;
+                    }
+					$address_state = '';
+                    if (property_exists($this->data, 'address_state'))
+                    {
+                        $address_state = $this->data->address_state;
+                    }
+					$address_zip = '';
+                    if (property_exists($this->data, 'address_zip'))
+                    {
+                        $address_zip = $this->data->address_zip;
+                    }
+					$exp_month = '';
+                    if (property_exists($this->data, 'exp_month'))
+                    {
+                        $exp_month = $this->data->exp_month;
+                    }
+					$exp_year = '';
+                    if (property_exists($this->data, 'exp_year'))
+                    {
+                        $exp_year = $this->data->exp_year;
+                    }
+					$name = '';
+                    if (property_exists($this->data, 'name'))
+                    {
+                        $name = $this->data->name;
+                    }
+					$meta_data = '';
+                    if (property_exists($this->data, 'meta_data'))
+                    {
+                        $meta_data = $this->data->meta_data;
+                    }
+                    $card = $this->sh->UpdateCard($customer_id, $card_id, $address_city, $address_country, $address_line1, $address_line2, $address_state, $address_zip, $exp_month, $exp_year, $name, $meta_data);
+                    $this->status = 200;
+                    $this->message = 'Card updated';
+                    $this->output = $card;
+                    break;
+				case 'remove_card':
+                    $customer_id = '';
+                    if (property_exists($this->data, 'customer_id'))
+                    {
+                        $customer_id = $this->data->customer_id;
+                    }
+					$card_id = '';
+                    if (property_exists($this->data, 'card_id'))
+                    {
+                        $card_id = $this->data->card_id;
+                    }
+                    $card = $this->sh->RemoveCard($customer_id, $card_id);
+                    $this->status = 200;
+                    $this->message = 'Card found';
+                    $this->output = $card;
+                    break;
 				//subscriptions
 				case 'create_subscription':
 					$customer_id = '';

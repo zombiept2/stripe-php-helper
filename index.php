@@ -976,6 +976,386 @@ print_r($customers);</pre>
             </div>
             <div class="row">
                 <div class="col-md-12">
+                    <button onclick="OpenContent('list_cards_content');" type="button" class="btn btn-primary btn-lg btn-block">List Cards</button>
+                    <br />
+                    <div id="list_cards_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="list_cards_form" class="form-horizontal" action="javascript:Process('list_cards');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="list_cards_customer_id" class="col-sm-2 control-label">Customer ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="list_cards_customer_id" placeholder="Customer ID">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_list_cards" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $customer_id - customer ID to list cards
+$cards = $sh->ListCards($customer_id);
+print_r($cards);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button onclick="OpenContent('add_card_content');" type="button" class="btn btn-primary btn-lg btn-block">Add Card</button>
+                    <br />
+                    <div id="add_card_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="add_card_form" class="form-horizontal" action="javascript:Process('add_card');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="add_card_customer_id" class="col-sm-2 control-label">Customer ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="add_card_customer_id" placeholder="Customer ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add_card_cc" class="col-sm-2 control-label">Card Number</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="add_card_cc" placeholder="Card Number" data-stripe="number">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add_card_exp_month" class="col-sm-2 control-label">Expiration Month</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="add_card_exp_month" placeholder="MM" size="2" maxlength="2"  data-stripe="exp-month">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add_card_exp_year" class="col-sm-2 control-label">Expiration Year</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="add_card_exp_year" placeholder="YYYY" size="4" maxlength="4"  data-stripe="exp-year">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add_card_cvc" class="col-sm-2 control-label">CVC</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="add_card_cvc" placeholder="CVC" size="4" maxlength="4"  data-stripe="cvc">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_add_card" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $customer_id - customer ID to list cards
+// $token - token from stripe.js
+$card = $sh->AddCard($customer_id, $token);
+print_r($card);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button onclick="OpenContent('get_card_content');" type="button" class="btn btn-primary btn-lg btn-block">Get Card</button>
+                    <br />
+                    <div id="get_card_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="get_card_form" class="form-horizontal" action="javascript:Process('get_card');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="get_card_customer_id" class="col-sm-2 control-label">Customer ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="get_card_customer_id" placeholder="Customer ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="get_card_card_id" class="col-sm-2 control-label">Card ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="get_card_card_id" placeholder="Card ID">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_get_card" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $customer_id - customer ID
+// $card_id - card ID
+$card = $sh->GetCard($customer_id, $card_id);
+print_r($card);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button onclick="OpenContent('update_card_content');" type="button" class="btn btn-primary btn-lg btn-block">Update Card</button>
+                    <br />
+                    <div id="update_card_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="update_card_form" class="form-horizontal" action="javascript:Process('update_card');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="update_card_customer_id" class="col-sm-2 control-label">Customer ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_customer_id" placeholder="Customer ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_card_id" class="col-sm-2 control-label">Card ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_card_id" placeholder="Card ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_address_city" class="col-sm-2 control-label">City</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_address_city" placeholder="City">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_address_country" class="col-sm-2 control-label">Country</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_address_country" placeholder="Country">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_address_line1" class="col-sm-2 control-label">Address Line 1</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_address_line1" placeholder="Address Line 1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_address_line2" class="col-sm-2 control-label">Address Line 2</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_address_line2" placeholder="Address Line 2">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_address_state" class="col-sm-2 control-label">State</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_address_state" placeholder="State">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_address_zip" class="col-sm-2 control-label">Zip</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_address_zip" placeholder="Zip">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_exp_month" class="col-sm-2 control-label">Expiration Month</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_exp_month" placeholder="Expiration Month">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_exp_year" class="col-sm-2 control-label">Expiration Year</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_exp_year" placeholder="Expiration Year">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="update_card_name" class="col-sm-2 control-label">Cardholder Name</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="update_card_name" placeholder="Cardholder Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_update_card" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $customer_id - customer ID
+// $card_id - card ID
+// $address_city - city
+// $address_country - country
+// $address_line1 - address 1
+// $address_line2 - address 2
+// $address_state - state
+// $address_zip - zip
+// $exp_month - month
+// $exp_year - year
+// $name - card holder name
+// $meta_data - key/value pairs
+$card = $sh->UpdateCard($customer_id, $card_id, $address_city, $address_country, $address_line1, $address_line2, $address_state, $address_zip, $exp_month, $exp_year, $name, $meta_data);
+print_r($card);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button onclick="OpenContent('remove_card_content');" type="button" class="btn btn-primary btn-lg btn-block">Remove Card</button>
+                    <br />
+                    <div id="remove_card_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="remove_card_form" class="form-horizontal" action="javascript:Process('remove_card');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="remove_card_customer_id" class="col-sm-2 control-label">Customer ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="remove_card_customer_id" placeholder="Customer ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="remove_card_card_id" class="col-sm-2 control-label">Card ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="remove_card_card_id" placeholder="Card ID">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_remove_card" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $customer_id - customer ID
+// $card_id - card ID
+$card = $sh->RemoveCard($customer_id, $card_id);
+print_r($card);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <button onclick="OpenContent('create_subscription_content');" type="button" class="btn btn-primary btn-lg btn-block">Create Subscription</button>
                     <br />
                     <div id="create_subscription_content" class="content_block">
@@ -1506,6 +1886,14 @@ print_r($refunds);</pre>
                     cc_exp_month_field: 'create_customer_exp_month',
                     cc_exp_year_field: 'create_customer_exp_year',
                     cc_cvc_field: 'create_customer_cvc'
+                });
+                $('#add_card_form').validate();
+                $('#add_card_form').stripetokenizer({
+                    key: '<?php echo $stripe_public_api_key; ?>',
+                    cc_field: 'add_card_cc',
+                    cc_exp_month_field: 'add_card_exp_month',
+                    cc_exp_year_field: 'add_card_exp_year',
+                    cc_cvc_field: 'add_card_cvc'
                 });
             });
             function OpenContent(id) {
@@ -2054,6 +2442,224 @@ print_r($refunds);</pre>
                                         $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
                                         $('#'+method+'_content .output').show();
                                         $('#'+method+'_limit').val('');
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'list_cards':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    customer_id: $('#'+method+'_customer_id').val()
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        $('#'+method+'_customer_id').val('');
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'add_card':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    customer_id: $('#'+method+'_customer_id').val(),
+                                    token: $('#'+method+'_form .stripe_token').val()
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        $('#'+method+'_customer_id').val('');
+                                        $('#'+method+'_form .stripe_token').val('');
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'get_card':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    customer_id: $('#'+method+'_customer_id').val(),
+                                    card_id: $('#'+method+'_card_id').val()
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        $('#'+method+'_customer_id').val('');
+                                        $('#'+method+'_card_id').val('');
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'update_card':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    customer_id: $('#'+method+'_customer_id').val(),
+                                    card_id: $('#'+method+'_card_id').val(),
+                                    address_city: $('#'+method+'_address_city').val(),
+                                    address_country: $('#'+method+'_address_country').val(),
+                                    address_line1: $('#'+method+'_address_line1').val(),
+                                    address_line2: $('#'+method+'_address_line2').val(),
+                                    address_state: $('#'+method+'_address_state').val(),
+                                    address_zip: $('#'+method+'_address_zip').val(),
+                                    exp_month: $('#'+method+'_exp_month').val(),
+                                    exp_year: $('#'+method+'_exp_year').val(),
+                                    name: $('#'+method+'_name').val()
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        /*
+                                        $('#'+method+'_customer_id').val('');
+                                        $('#'+method+'_card_id').val('');
+                                        $('#'+method+'_address_city').val('');
+                                        $('#'+method+'_address_country').val('');
+                                        $('#'+method+'_address_line1').val('');
+                                        $('#'+method+'_address_line2').val('');
+                                        $('#'+method+'_address_state').val('');
+                                        $('#'+method+'_address_zip').val('');
+                                        $('#'+method+'_exp_month').val('');
+                                        $('#'+method+'_exp_year').val('');
+                                        $('#'+method+'_name').val('');
+                                        */
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'remove_card':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    customer_id: $('#'+method+'_customer_id').val(),
+                                    card_id: $('#'+method+'_card_id').val()
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        $('#'+method+'_customer_id').val('');
+                                        $('#'+method+'_card_id').val('');
                                         ResetButton(method);
                                     }
                                     else {
