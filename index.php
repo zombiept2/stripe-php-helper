@@ -234,6 +234,18 @@ print_r($charge);</pre>
                                                     <input type="text" class="form-control" id="list_charges_customer_id" placeholder="Customer ID (ex: cus_Boey6SXoqlmba8)">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="list_charges_start_date" class="col-sm-2 control-label">Start Date</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="list_charges_start_date" placeholder="Start Date (ex: mm/dd/yyyy)">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="list_charges_end_date" class="col-sm-2 control-label">End Date</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="list_charges_end_date" placeholder="End Date (ex: mm/dd/yyyy)">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button id="process_button_list_charges" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
@@ -251,7 +263,9 @@ print_r($charge);</pre>
 $sh = new StripeHelper();
 // $limit - integer value (from 1 to 100)
 // $customer_id - customer id
-$charges = $sh->ListCharges($limit);
+// $start_date - min transaction date
+// $end_date - max transaction date
+$charges = $sh->ListCharges($limit, $customer_id, $start_date, $end_date);
 print_r($charges);</pre>
                                     </div>
                                 </div>
@@ -1926,7 +1940,9 @@ print_r($refunds);</pre>
                                 data: {
                                     method: method,
                                     limit: $('#'+method+'_limit').val(),
-                                    customer_id: $('#'+method+'_customer_id').val()
+                                    customer_id: $('#'+method+'_customer_id').val(),
+                                    start_date: $('#'+method+'_start_date').val(),
+                                    end_date: $('#'+method+'_end_date').val()
                                 }
                             }).done(function(data) {
                                 if (data) {

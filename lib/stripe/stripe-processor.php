@@ -40,7 +40,17 @@ class StripeProcessor
                     {
                         $customer_id = $this->data->customer_id;
                     }
-                    $charges = $this->sh->ListCharges($limit, $customer_id);
+					$start_date = '';
+					if (property_exists($this->data, 'start_date'))
+					{
+						$start_date = $this->data->start_date;
+					}
+					$end_date = '';
+					if (property_exists($this->data, 'end_date'))
+					{
+						$end_date = $this->data->end_date;
+					}
+                    $charges = $this->sh->ListCharges($limit, $customer_id, $start_date, $end_date);
                     $this->status = 200;
                     $this->message = 'Charges found';
                     $this->output = $charges;

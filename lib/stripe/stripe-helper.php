@@ -157,7 +157,7 @@ class StripeHelper
 		}
 		return $response;
     }
-	public function ListCharges($limit, $customer_id)
+	public function ListCharges($limit, $customer_id, $start_date, $end_date)
     {
 		$response = false;
 		$error = '';
@@ -171,6 +171,16 @@ class StripeHelper
 		{
 			$data['customer'] = $customer_id;
 		}
+		$dates = [];
+		if ($start_date != '')
+		{
+			$dates['gte'] = strtotime($start_date);
+		}
+		if ($end_date != '')
+		{
+			$dates['lte'] = strtotime($end_date);
+		}
+		$data['created'] = $dates;
 		try
 		{
 			$response = Stripe\Charge::all($data);
