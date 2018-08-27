@@ -211,6 +211,74 @@ print_r($charge);</pre>
             </div>
             <div class="row">
                 <div class="col-md-12">
+                    <button onclick="OpenContent('charge_customer_content');" type="button" class="btn btn-primary btn-lg btn-block">Charge Customer</button>
+                    <br />
+                    <div id="charge_customer_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="charge_customer_form" class="form-horizontal" action="javascript:Process('charge_customer');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="charge_customer_customer_id" class="col-sm-2 control-label">Customer ID</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="charge_customer_customer_id" placeholder="Customer ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="charge_customer_amount" class="col-sm-2 control-label">Amount</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="charge_customer_amount" placeholder="Amount in dollars (i.e. 10.00)">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="charge_customer_description" class="col-sm-2 control-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="charge_customer_description" placeholder="Description of charge">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_charge_customer" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $customer_id - ID of customer in Stripe
+// $amount - dollar amount with decimal (i.e. 10.00)
+// $description - description of charge
+$charge = $sh->ChargeCustomer($customer_id, $amount, $description);
+print_r($charge);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <button onclick="OpenContent('list_charges_content');" type="button" class="btn btn-primary btn-lg btn-block">List Charges</button>
                     <br />
                     <div id="list_charges_content" class="content_block">
@@ -1992,6 +2060,48 @@ print_r($refunds);</pre>
                                         $('#'+method+'_amount').val('');
                                         $('#'+method+'_description').val('');
                                         $('#'+method+'_form .stripe_token').val('');
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'charge_customer':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    amount: $('#'+method+'_amount').val(),
+                                    customer_id: $('#'+method+'_customer_id').val(),
+                                    description: $('#'+method+'_description').val()
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        $('#'+method+'_amount').val('');
+                                        $('#'+method+'_description').val('');
+                                        $('#'+method+'_customer_id').val('');
                                         ResetButton(method);
                                     }
                                     else {

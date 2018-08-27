@@ -83,6 +83,34 @@ class StripeProcessor
                     }
                     $this->output = $charge;
                     break;
+                case 'charge_customer':
+                    $amount = '';
+                    if (property_exists($this->data, 'amount'))
+                    {
+                        $amount = $this->data->amount;
+                    }
+                    $customer_id = '';
+                    if (property_exists($this->data, 'customer_id'))
+                    {
+                        $customer_id = $this->data->customer_id;
+                    }
+                    $description = '';
+                    if (property_exists($this->data, 'description'))
+                    {
+                        $description = $this->data->description;
+                    }
+                    $charge = $this->sh->ChargeCustomer($customer_id, $amount, $description);
+                    $this->status = 200;
+                    if ($charge)
+                    {
+                        $this->message = 'Charge processed';
+                    }
+                    else
+                    {
+                        $this->message = 'Charge failed';
+                    }
+                    $this->output = $charge;
+                    break;
                 //balance
                 case 'balance':
                     $balance = $this->sh->ReturnBalance();

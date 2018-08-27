@@ -157,6 +157,59 @@ class StripeHelper
 		}
 		return $response;
     }
+    public function ChargeCustomer($customer_id, $amount, $description)
+    {
+		$response = false;
+		$error = '';
+		
+		if ($amount != '')
+		{
+			try
+			{
+				$response = Stripe\Charge::create(array(
+				  "amount" => ReturnPennies($amount),
+				  "currency" => "usd",
+                  "customer" => $customer_id,
+				  "description" => $description
+				));
+			}
+			catch(Stripe_CardError $e) 
+			{
+				$error = $e->getMessage();
+			} 
+			catch (Stripe_InvalidRequestError $e) 
+			{
+				// Invalid parameters were supplied to Stripe's API
+				$error = $e->getMessage();
+			} 
+			catch (Stripe_AuthenticationError $e) 
+			{
+				// Authentication with Stripe's API failed
+				$error = $e->getMessage();
+			} 
+			catch (Stripe_ApiConnectionError $e) 
+			{
+				// Network communication with Stripe failed
+				$error = $e->getMessage();
+			} 
+			catch (Stripe_Error $e) 
+			{
+				// Display a very generic error to the user, and maybe send
+				// yourself an email
+				$error = $e->getMessage();
+			} 
+			catch (Exception $e) 
+			{
+				// Something else happened, completely unrelated to Stripe
+				$error = $e->getMessage();
+			}
+			if ($error != '')
+			{
+				$response['error'] = $error;
+			}
+		}
+		return $response;
+    }
 	public function ListCharges($limit, $customer_id, $start_date, $end_date)
     {
 		$response = false;
