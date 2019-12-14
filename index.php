@@ -744,39 +744,9 @@ print_r($disputes);</pre>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="create_customer_coupon" class="col-sm-2 control-label">Coupon</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="create_customer_coupon" placeholder="Coupon">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="create_customer_email" class="col-sm-2 control-label">Email</label>
                                                 <div class="col-sm-10">
                                                     <input type="text" class="form-control" id="create_customer_email" placeholder="Email">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="create_customer_cc" class="col-sm-2 control-label">Card Number</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="create_customer_cc" placeholder="Card Number" data-stripe="number">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="create_customer_exp_month" class="col-sm-2 control-label">Expiration Month</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" id="create_customer_exp_month" placeholder="MM" size="2" maxlength="2"  data-stripe="exp-month">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="create_customer_exp_year" class="col-sm-2 control-label">Expiration Year</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" id="create_customer_exp_year" placeholder="YYYY" size="4" maxlength="4"  data-stripe="exp-year">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="create_customer_cvc" class="col-sm-2 control-label">CVC</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" id="create_customer_cvc" placeholder="CVC" size="4" maxlength="4"  data-stripe="cvc">
                                                 </div>
                                             </div>
                                         </div>
@@ -795,11 +765,103 @@ print_r($disputes);</pre>
 <pre>
 $sh = new StripeHelper();
 // $description - text to describe user
+// $email - customer email address
+// $meta_data - set of key/value pairs that you can attach to a customer object
+$customer = $sh->CreateCustomer($description, $email, $meta_data);
+print_r($customer);</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 output"> 
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Output</h3>
+                                    </div>
+                                    <div class="panel-body output_content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button onclick="OpenContent('create_customer_with_card_content');" type="button" class="btn btn-primary btn-lg btn-block">Create Customer with Card</button>
+                    <br />
+                    <div id="create_customer_with_card_content" class="content_block">
+                        <div class="row">
+                            <div class="col-md-6 input">
+                                <form id="create_customer_with_card_form" class="form-horizontal" action="javascript:Process('create_customer_with_card');">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Input</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_description" class="col-sm-2 control-label">Description</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="create_customer_with_card_description" placeholder="Description">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_coupon" class="col-sm-2 control-label">Coupon</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="create_customer_with_card_coupon" placeholder="Coupon">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_email" class="col-sm-2 control-label">Email</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="create_customer_with_card_email" placeholder="Email">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_cc" class="col-sm-2 control-label">Card Number</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="create_customer_with_card_cc" placeholder="Card Number" data-stripe="number">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_exp_month" class="col-sm-2 control-label">Expiration Month</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="create_customer_with_card_exp_month" placeholder="MM" size="2" maxlength="2"  data-stripe="exp-month">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_exp_year" class="col-sm-2 control-label">Expiration Year</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="create_customer_with_card_exp_year" placeholder="YYYY" size="4" maxlength="4"  data-stripe="exp-year">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="create_customer_with_card_cvc" class="col-sm-2 control-label">CVC</label>
+                                                <div class="col-sm-10">
+                                                    <input type="number" class="form-control" id="create_customer_with_card_cvc" placeholder="CVC" size="4" maxlength="4"  data-stripe="cvc">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button id="process_button_create_customer_with_card" type="submit" class="submit_btn btn btn-primary btn-sm">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Code Usage</h3>
+                                    </div>
+                                    <div class="panel-body">
+<pre>
+$sh = new StripeHelper();
+// $description - text to describe user
 // $token - from stripe.js
 // $coupon - coupon name to give ongoing discount to customer on recurring charges
 // $email - customer email address
 // $meta_data - set of key/value pairs that you can attach to a customer object
-$customer = $sh->CreateCustomer($description, $token, $coupon, $email, $meta_data);
+$customer = $sh->CreateCustomerWithCard($description, $token, $coupon, $email, $meta_data);
 print_r($customer);</pre>
                                     </div>
                                 </div>
@@ -1961,8 +2023,8 @@ print_r($refunds);</pre>
                     cc_exp_year_field: 'charge_exp_year',
                     cc_cvc_field: 'charge_cvc'
                 });
-                $('#create_customer_form').validate();
-                $('#create_customer_form').stripetokenizer({
+                $('#create_customer_with_card_form').validate();
+                $('#create_customer_with_card_form').stripetokenizer({
                     key: '<?php echo $stripe_public_api_key; ?>',
                     cc_field: 'create_customer_cc',
                     cc_exp_month_field: 'create_customer_exp_month',
@@ -2387,6 +2449,48 @@ print_r($refunds);</pre>
                         }
                         break;
                     case 'create_customer':
+                        // validations
+                        if (valid) {
+                            ActivateButton(method);
+                            $.ajax({
+                                type: 'POST',
+                                url: 'processor.php',
+                                dataType: 'json',
+                                data: {
+                                    method: method,
+                                    description: $('#'+method+'_description').val(),
+                                    email: $('#'+method+'_email').val(),
+                                }
+                            }).done(function(data) {
+                                if (data) {
+                                    if (data.status == 200) {
+                                        $('#'+method+'_content .output_content').html('<pre>'+JSON.stringify(data.output,null,'  ')+'</pre>');
+                                        $('#'+method+'_content .output').show();
+                                        $('#'+method+'_description').val('');
+                                        $('#'+method+'_coupon').val('');
+                                        $('#'+method+'_email').val('');
+                                        $('#'+method+'_form .stripe_token').val('');
+                                        ResetButton(method);
+                                    }
+                                    else {
+                                        $('#'+method+'_content .output_content').html('');
+                                        $('#'+method+'_content .output').hide();
+                                        ShowMessage(data.message, 'Oops!', 'OK', 'error');
+                                    }
+                                }
+                                else {
+                                    ShowMessage("Unable to process", 'Oops!', 'OK', 'error');
+                                }
+                                ResetButton(method);
+                            }).fail(function() {
+                                ResetButton(method);
+                            });
+                        }
+                        else {
+                            ShowMessage(errorMessage, 'Oops!', 'OK', 'error');
+                        }
+                        break;
+                    case 'create_customer_with_card':
                         // validations
                         if (valid) {
                             ActivateButton(method);

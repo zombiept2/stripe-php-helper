@@ -194,6 +194,23 @@ class StripeProcessor
                     {
                         $description = $this->data->description;
                     }
+					$email = '';
+                    if (property_exists($this->data, 'email'))
+                    {
+                        $email = $this->data->email;
+                    }
+					$meta_data = '';
+                    $customer = $this->sh->CreateCustomer($description, $email, $meta_data);
+                    $this->status = 200;
+                    $this->message = 'Customer created';
+                    $this->output = $customer;
+					break;
+                case 'create_customer_with_card':
+					$description = '';
+                    if (property_exists($this->data, 'description'))
+                    {
+                        $description = $this->data->description;
+                    }
 					$token = '';
 					if (property_exists($this->data, 'token'))
                     {
@@ -210,7 +227,7 @@ class StripeProcessor
                         $email = $this->data->email;
                     }
 					$meta_data = '';
-                    $customer = $this->sh->CreateCustomer($description, $token, $coupon, $email, $meta_data);
+                    $customer = $this->sh->CreateCustomerWithCard($description, $token, $coupon, $email, $meta_data);
                     $this->status = 200;
                     $this->message = 'Customer created';
                     $this->output = $customer;

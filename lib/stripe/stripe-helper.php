@@ -605,7 +605,60 @@ class StripeHelper
 		return $response;
 	}
 	//customers
-	public function CreateCustomer($description, $token, $coupon, $email, $meta_data)
+    public function CreateCustomer($description, $email, $meta_data)
+	{
+		$response = false;
+		$error = '';
+		$data = [];
+		if ($description != '')
+		{
+			$data['description'] = $description;
+		}
+		if ($email != '')
+		{
+			$data['email'] = $email;
+		}
+		if ($meta_data != '')
+		{
+			$data['metadata'] = $meta_data;
+		}
+		try
+		{
+			$response = Stripe\Customer::create($data);
+		}
+		catch (Stripe_InvalidRequestError $e) 
+		{
+			// Invalid parameters were supplied to Stripe's API
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_AuthenticationError $e) 
+		{
+			// Authentication with Stripe's API failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_ApiConnectionError $e) 
+		{
+			// Network communication with Stripe failed
+			$error = $e->getMessage();
+		} 
+		catch (Stripe_Error $e) 
+		{
+			// Display a very generic error to the user, and maybe send
+			// yourself an email
+			$error = $e->getMessage();
+		} 
+		catch (Exception $e) 
+		{
+			// Something else happened, completely unrelated to Stripe
+			$error = $e->getMessage();
+		}
+		if ($error != '')
+		{
+			$response['error'] = $error;
+		}
+		return $response;
+	}
+	public function CreateCustomerWithCard($description, $token, $coupon, $email, $meta_data)
 	{
 		$response = false;
 		$error = '';
@@ -1647,4 +1700,14 @@ class StripeHelper
 		}
 		return $response;
 	}
+    private function _ReturnPennies($amount) 
+    {
+        $amount = $amount * 100;
+        return $amount;
+    }
+    private function _ReturnDollars($amount) 
+    {
+        $amount = $amount / 100;
+        return $amount;
+    }
 }
